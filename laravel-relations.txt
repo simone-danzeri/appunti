@@ -1,0 +1,100 @@
+one to one
+
+model principale -> public function userDetails() { return $this->hasOne(UserDetail::class) }
+model secondario -> public function user() { return $this->belongsTo(User::class) }
+
+one to many
+
+model one (no FK) -> public function projects() { return $this->hasMany(Project::class) }
+model two (FK) -> public function users() { return $this->belongsTo(Users::class) }
+
+CLI
+php artisan make:migration create_types_table
+
+in migration
+$table->string('name')->unique();
+$table->string('slug');
+
+CLI
+php artisan migrate
+php artisan make:migration add_type_id_to_projects_table
+
+in migration up()
+// creiamo relazione FK tra types e projects
+$table->unsignedBigInteger('type_id')->nullable()->after('id');
+$table->foreign('type_id')
+      ->references('id')
+      ->on('types')
+      ->onDelete('set null');
+
+in migration down()
+// cancelliamo la regola che impone category_id come FK
+$table->dropForeign('projects_type_id_foreign');
+$table->dropColumn('type_id');
+
+CLI
+php artisan migrate
+php artisan make:seeder TypesTableSeeder
+php artisan make:model Type
+
+in seeders run()
+use model Type;
+$types = ['FrontEnd', 'BackEnd', 'FullStack', 'Design', 'DevOps'];
+foreach($types as $typeName) { $newType = new Type();
+$newType->name = $typeName;
+$newType->slug = Str::slug($newType->name . '-');
+$newType->save(); }
+add use seeder TypesTableSeeder and TypesTableSeeder::class a Databaseseeder in call()
+
+CLI
+// non li. faccio partire tutti i seeder perchè se no mi duplica tutti i seeder
+php artisan db:seed --class TypesTableSeeder
+
+in model Project
+public function type() { return $this->belongsTo('Type::class'); }
+
+in model Type
+public function projects() { return $this->hasMany(Project::class); }
+
+CLI php artisan serve
+
+in show.blade.php
+stampo categorie con {{ $project->type->name }} dentro un if($project->type)
+// $project->type è il Model che gestisce tutte le categorie
+
+in create.blade
+metto una select per scegliere la categoria
+name="type_id" />
+
+in ProjectController
+in create
+$types = Type::all();
+compact('types')
+
+in create
+stampo con foreach le categorie tra le option
+come value metto $type->id
+@selected per pre-popolare
+
+in model Project
+aggiungo category_id ai fillable
+
+per validazione
+'type_id' => 'nullable|exists:types,id'
+
+in edit
+stesso procedimento di sopra
+
+
+many to many
+
+creo tabella tags
+creo colonne
+migro a db
+creo tabella ponte
+rimuovo id e timestamp
+creo colonne per FK
+creo seeder per tags
+creo model per tags
+sistemo i model che riflettano la struttura del db (belongsToMany)
+stampo in show i tag relativi al project

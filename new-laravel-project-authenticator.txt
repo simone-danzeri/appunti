@@ -1,0 +1,17 @@
+composer create-project --prefer-dist laravel/laravel:^9.2 your_project_name_here
+
+cd your_project_name_here
+
+composer require laravel/breeze --dev
+
+php artisan breeze:install
+
+composer require pacificdev/laravel_9_preset:1.1.1
+
+php artisan preset:ui bootstrap --auth
+
+npm i
+
+npm run dev
+
+php artisan serve (new tab)

@@ -1,0 +1,33 @@
+1) Creo da phpMyAdmin il database
+
+2) Su file .env modifico le info del DB
+
+3) Aggiungo tabella con CLI: 
+	- php artisan make:migration create_trains_table
+
+	'trains' sarà il nome della tabella e va scritto snake_case al plurale
+
+4) Creo colonne dentro la mia tabella -> entro in Migration e scelgo la mia tabella -> dentro up() inserisco le mie colonne :
+	- $table->string('name', 100); vedi elenco completo su https://laravel.com/docs/9.x/migrations#creating-columns
+
+5) Per far partire la migrazione verso il server, in CLI:
+	- php artisan migrate
+
+6) Per popolare la tabella con le istanze mi serve prima un Model (stesso nome dell'entità ma al singolare):
+	- php artisan make:model MyModel
+
+7) Ora posso creare il Seeder:
+ 	- php artisan make:seeder TrainsTableSeeder
+
+	'Trains' è nome tabella ma PascalCase
+
+8) Dopo aver popolato il seeder lo invio al db con:
+	- php artisan db:seed --class TrainsTableSeeder
+
+8b) Posso andare nel DatabaseSeeder generale e mettere:
+	-         $this->call([
+		    TrainsTableSeeder::class,
+		    NomeTableSeeder::class,
+		    NomeTableSeeder::class,
+		  ]);
+	- php artisan db:seed

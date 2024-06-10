@@ -1,0 +1,41 @@
+in new CLI tab:
+npm create vite@latest vite-nome-repo -- --template vue
+cd vite-nome-repo
+npm install
+npm add -D sass
+npm install axios
+npm run dev
+dalla cartella del progetto in VSCode:
+in App.vue cancello tutto (creo script/template/style)
+cancello style.css(rimuoverlo anche da main.js) ed HelloWorld.vue
+in src->creo cartella style->generic.scss
+in app.Vue <style>:
+@use './style/generic';
+spengo server fo:
+npm install bootstrap
+in generic.scss:
+@import "node_modules/bootstrap/scss/bootstrap";
+in main.js
+import * as bootstrap from 'bootstrap';
+
+creo nuovo componente ProjectList in component e lo importo in App.vue
+in ProjectList faccio chiamata axios a be:
+import axios from 'axios';
+creo data() { 
+return { 
+projects: [] }; },
+methods: { 
+getProjects() { 
+axios.get('url da postman')
+.then((response) => {
+this.projects = response.data.results;
+}); },
+mounted() { 
+this.getProjects();
+} }
+in <template> con v-for = "project in projects" stampo tutti i project (es. project.name).
+volendo si può spostare il singolo project card in un componente a parte e con props passargli i dati del singolo project
+in laravel(Api/ProjectController) cambio $projects = Project::all(); in $projects = Project::with('technologies', 'type')->get(); per avere anche le technologies e i types in API
+CORS policy
+in laravel .env creo APP_FRONTEND_URL = http://localhost:5174
+ed in cors.php cambio 'allowed_origins' in [env('APP_FRONTEND_URL', 'http://default.it')]

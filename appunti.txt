@@ -1,0 +1,23 @@
+<!-- Per creare scaffolding base di Vite + Vue scrivi questo in CLI (linea di comando da terminale -->
+
+npm create vite@latest nome-repository -- --template vue
+
+
+
+<!-- Per installare SASS scrivi questo nella CLI quando sei dentro la cartella della repo -->
+
+npm add -D sass
+
+
+<!-- Per installare Axios -->
+
+npm install axios@0.27.2
+
+
+
+
+<!-- Per inserire immagini dinamicamente usa questo snippet tra i methods -->
+
+function getImageUrl(name) {
+  return new URL(`./dir/${name}.png`, import.meta.url).href
+}

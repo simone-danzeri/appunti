@@ -1,0 +1,9 @@
+1. pull e si crea nuovo branch (ricordati di pushare il branch)
+2. lavoro e commmitto sul mio branch
+3. al termine dello sviluppo sul mio branch, mi sposto sul branch main dove farò il merge
+4. pull
+5. merge
+6. delete del branch creato al punto 1 (non sempre si cancella, dipende dall'azienda)
+7. push
+
+Quando si lavora in team si crea sempre un branch develop a partire dal main come copia e si lavora a partire da quel branch e si fa merge nel main solo quando si è sicuri di tutto quello che si è sviluppato a partire dal branch develop.
