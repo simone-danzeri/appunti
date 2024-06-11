@@ -1,3 +1,4 @@
+STEP PER CREARE NUOVO PROGETTO E SCAFFOLDING
 in new CLI tab:
 npm create vite@latest vite-nome-repo -- --template vue
 cd vite-nome-repo
@@ -18,12 +19,15 @@ in generic.scss:
 in main.js
 import * as bootstrap from 'bootstrap';
 
+GIORNO 1 - INDEX CON TUTTI I PROGETTI
 creo nuovo componente ProjectList in component e lo importo in App.vue
-in ProjectList faccio chiamata axios a be:
+in ProjectList faccio chiamata axios a BE:
 import axios from 'axios';
 creo data() { 
 return { 
-projects: [] }; },
+projects: []
+};
+},
 methods: { 
 getProjects() { 
 axios.get('url da postman')
@@ -39,3 +43,97 @@ in laravel(Api/ProjectController) cambio $projects = Project::all(); in $project
 CORS policy
 in laravel .env creo APP_FRONTEND_URL = http://localhost:5174
 ed in cors.php cambio 'allowed_origins' in [env('APP_FRONTEND_URL', 'http://default.it')]
+
+GIORNO 2 - NAV TRA ELEMENTI
+creo AppHeader.vue con una nav bar
+in AppHeader.vue creo link a pagina home, about e projects
+in CLI di FO installo vue router con:
+npm install vue-router@4
+in App.vue lo usiamo come se fosse uno yield
+dentro <template> e sotto <AppHeader> metto <router-view></router-view> e vue ci metterà quello che gli indico nelle routes
+// tutti i components che verranno messi dentro <router-view> andranno messi dentro una cartella nuova chiamata pages
+// dentro components restano i componenti generici che restano e vengono usati da altre parti
+creo cartella pages in src
+creo component AppHome.vue
+creo component AppAbout.vue
+// a gestire le routes su vue sarà il file che creiamo noi chiamato router.js
+in src creo router.js
+in router.js
+-- copia sintassi da slide --
+import dei components
+in routes: [
+    {
+        path: '/',
+        name: 'home',
+        component: AppHome
+    },
+        {
+        path: '/about',
+        name: 'about',
+        component: AppAbout
+    },
+]
+in main.js:
+import {  router } from './router'
+createApp(App).use(router).mount(#app);
+// per navigare tra le pagine dell'app si usa il tag <router-link>
+in AppHeader nei <li> al posto di <a> mettiamo <router-link>
+al posto href mettiamo :to = { name: 'home' }
+sposto ProjectList in pages (sistemo in import il path)
+in router.js aggiungo la rotta per projects
+
+// creo Api endpoint per il singolo project
+in laravel Api/ProjectController
+public function show($slug) {
+    $project = Project::where('slug', '=', $slug)->with('technologies', 'type')->first();
+    if($project) {
+        $data = [
+            'success' => true,
+            'project' => $project
+        ];
+    } else {
+        $data = [
+            'success' => false,
+            'error' => 'no project with this slug'
+        ];
+    }
+    return response()->json($data);
+}
+in api.php
+Route::get('projects/{slug}', [ProjectController::class, 'show']);
+
+// torno in vue
+creo SingleProject.vue in pages
+in router.js
+// posso creare un path(url) con parte variabile
+in routes [
+    {
+        path: '/projects/:slug',
+        name: 'single-project',
+        component: SinglePost
+    }
+]
+in SingleProject
+import axios from 'axios';
+data() {
+    return {
+        project: null
+    };
+},
+methods: {
+    getProjectDetails() {
+        axios.get(`url da api/${this.$route.params.slug}`)
+        .then((response) => {
+            // console.log(response.data);
+            this.project = response.data.project;
+        });
+    },
+    mounted() {
+        this.getProjectDetails();
+    }
+}
+per stampare i vari name, summary...devo mettere v-if="project" per colpa dell'asincronicità tra mounted e chiamata axios
+per img
+in :src=`parte fissa${ project.cover_image }`
+in ProjectsList
+<a> diventa <router-link :to="{ name: 'SingleProject', params: { slug: project.slug } }">
