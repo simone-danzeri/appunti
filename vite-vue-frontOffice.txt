@@ -59,8 +59,15 @@ creo component AppAbout.vue
 // a gestire le routes su vue sarà il file che creiamo noi chiamato router.js
 in src creo router.js
 in router.js
--- copia sintassi da slide --
+import { createRouter, createWebHistory } from 'vue-router';
 import dei components
+import AppHome from './pages/AppHome.vue';
+import AppAbout from './pages/AppAbout.vue';
+const router = createRouter({
+    history: createWebHistory(),
+    routes: []
+});
+export { router };
 in routes: [
     {
         path: '/',
