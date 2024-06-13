@@ -144,3 +144,29 @@ per img
 in :src=`parte fissa${ project.cover_image }`
 in ProjectsList
 <a> diventa <router-link :to="{ name: 'SingleProject', params: { slug: project.slug } }">
+
+per il loader
+creo componente Loader.vue
+lo importo in ProjectsList
+creo variabile isLoading: false
+// quando parte la chiamata API la metto a true ed alla fine della chiamata di nuovo false
+metto tutti i post con <div v-if="!isLoading"></div>
+e <div v-else> <Loader></Loader> </div>
+in getProjectDetails() metto this.isLoading = true
+e poi denntro la this della response lo metto a false
+in SingleProject faccio la stessa cosa
+
+per email di contatto
+creo component ContactUs in components
+dal form togliere action e method perchè refresha la pagina (io devo mandare al BE)
+non serve nemmeno il name perchè non invio il form
+creo API in laravel /api/contacts
+creo tabella leads
+creo Lead Model 
+creo Api/LeadController
+in LeadController
+    public function store(Request $request) {
+        $data = $request->all();
+    }
+prendi da registrazione lezione - slide come creare nuova istanza Mail e tool per fake mail server
+aggiungo user experience per errori e messaggi success
