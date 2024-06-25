@@ -1,0 +1,11 @@
+vedi steps-for-new-db
+vedi new-laravel-project-authenticator
+php artisan migrate per migrate tabella users in db
+
+// chiedere a mari comando per fare tutto in un colpo unico
+php artisan make:migration create_nome_tabella_table per ogni tabella che ci servirà
+php artisan make:model NomeTabella
+php artisan make:seeder TypesTableSeeder
+php artisan make:controller --resource TypeController
+in routes/web.php
+Route::resource('types', TypeController::class);

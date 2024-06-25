@@ -47,7 +47,7 @@ $newType->save(); }
 add use seeder TypesTableSeeder and TypesTableSeeder::class a Databaseseeder in call()
 
 CLI
-// non li. faccio partire tutti i seeder perchè se no mi duplica tutti i seeder
+// non li faccio partire tutti i seeder perchè se no mi duplica tutti i seeder
 php artisan db:seed --class TypesTableSeeder
 
 in model Project

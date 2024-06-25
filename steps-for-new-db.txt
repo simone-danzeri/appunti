@@ -25,9 +25,16 @@
 	- php artisan db:seed --class TrainsTableSeeder
 
 8b) Posso andare nel DatabaseSeeder generale e mettere:
-	-         $this->call([
+	-     $this->call([
 		    TrainsTableSeeder::class,
 		    NomeTableSeeder::class,
 		    NomeTableSeeder::class,
 		  ]);
 	- php artisan db:seed
+
+9) Creo il controller per le CRUD
+	- php artisan make:controller --resource TrainController
+
+10) Gestisco e creo le rotte per CRUD
+	- in routes/web.php
+	Route::resource('trains', TrainController::class)
