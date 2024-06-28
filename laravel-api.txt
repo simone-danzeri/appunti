@@ -1,13 +1,16 @@
-per creare API in Laravel:
-in routes.api.php -> Route::get('/projects', function() {});
-creo Controller per API -> Api/ProjectController (controller che gestisce le api dei projects) con php artisan make:controller Api/ProjectController
-creo la f(x) index nel controller da sostituire alla anonima della rotta:
-Route::get('/projects', [ProjectController::class, 'index']);
-public function index() { 
-return response()->json(array); }
-tramite Model mi prendo tutti i projects
-dentro la index() metto -> $projects = Project::all();
-return response()->json([
-"success" => true,
-"results" => $projects
-]);
+1) creo Controller per API
+    - php artisan make:controller Api/ProjectController
+2) in routes.api.php
+    - Route::get('/projects', function() {});
+3) creo la f(x) index nel controller da sostituire alla anonima della rotta al punto 1:
+    - Route::get('/projects', [ProjectController::class, 'index']);
+4) in Api/ProjectController
+    - use dei vari Model e simili (i model dovrebbero bastare);
+    -   public function index() {
+            // così prendo tutti i progetti
+            $projects = Project::all();
+            return response()->json([
+                "success" => true,
+                "results" => $projects
+            ]);
+        }
